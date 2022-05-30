@@ -24,6 +24,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         MovimientoPersonaje();
+        RotarCamera();
     }
 
     public void MovimientoPersonaje()
@@ -33,6 +34,19 @@ public class Movement : MonoBehaviour
 
         move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
-        
+    }
+
+    public void RotarCamera()
+    {
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            transform.Rotate(new Vector3(0f, 90f, 0f));
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            transform.Rotate(new Vector3(0f, -90f, 0f));
+        }
+
     }
 }
