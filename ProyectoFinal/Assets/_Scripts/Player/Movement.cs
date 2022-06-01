@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour
     public float VerSpeed;
     public float HorSpeed;
     public float speed;
+    public float range = 5;
 
     float x;
     float z;
@@ -25,6 +26,7 @@ public class Movement : MonoBehaviour
     {
         MovimientoPersonaje();
         RotarCamera();
+        RayCast();
     }
 
     public void MovimientoPersonaje()
@@ -40,13 +42,28 @@ public class Movement : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            transform.Rotate(new Vector3(0f, 90f, 0f));
+            transform.Rotate(new Vector3(0f, -90f, 0f));
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            transform.Rotate(new Vector3(0f, -90f, 0f));
+            transform.Rotate(new Vector3(0f, 90f, 0f));
         }
 
+    }
+
+    public void RayCast()
+    {
+        Vector3 direction = Vector3.forward;
+        Ray Ray = new Ray(transform.position, transform.TransformDirection(direction * range));
+        Debug.DrawRay(transform.position, transform.TransformDirection(direction * range));
+
+        if(Physics.Raycast(Ray, out RaycastHit hit, range))
+        {
+            if(hit.collider.tag == "Pared")
+            {
+                print("Chocaste");
+            }
+        }
     }
 }
