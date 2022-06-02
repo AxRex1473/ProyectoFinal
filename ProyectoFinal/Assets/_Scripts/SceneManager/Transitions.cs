@@ -32,19 +32,24 @@ public class Transitions : MonoBehaviour
 
     private IEnumerator WaitForPlay(int _sceneIndex)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         StartCoroutine(LoadAsynchonously(_sceneIndex));
     }
 
     private IEnumerator LoadAsynchonously(int _sceneIndex)
     {
+        //Pregunta, Habra una mejor manera de hacer esto sin AsyncOperation
         AsyncOperation operation = SceneManager.LoadSceneAsync(_sceneIndex);
+        operation.allowSceneActivation = false;
 
-        while (!operation.isDone)
+        while (_slider.value < 1)
         {
             float progress = Mathf.Clamp01(operation.progress / .9f);
-            _slider.value = Mathf.Lerp(_slider.minValue, _slider.maxValue, Time.deltaTime * 0.9f);
+            _slider.value = Mathf.MoveTowards(_slider.value, progress, Time.deltaTime * 0.9f);
             yield return null;
         }
+
+        yield return new WaitForSeconds(0.2f);
+        operation.allowSceneActivation = true;
     }
 }
